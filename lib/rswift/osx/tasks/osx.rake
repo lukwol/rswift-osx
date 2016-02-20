@@ -4,13 +4,16 @@ require 'rswift'
 DERIVED_DATA_PATH = 'build'
 DEBUG_ENV_KEY = 'debug'
 
+debug = ENV[DEBUG_ENV_KEY]
+debug ||= '0'
+
+workspace = RSwift::WorkspaceProvider.workspace
+project = Xcodeproj::Project.open(Dir.glob('*.xcodeproj').first)
+
 task :default => :run
 
 desc 'Build workspace'
 task :build do
-  workspace = RSwift::WorkspaceProvider.workspace
-  project_path = Dir.glob('*.xcodeproj').first
-  project = Xcodeproj::Project.open(project_path)
   output = ""
   IO.popen("xcodebuild -workspace #{workspace} -scheme #{project.app_scheme_name} -destination 'platform=macosx' -derivedDataPath #{DERIVED_DATA_PATH} | xcpretty").each do |line|
     puts line.chomp
@@ -22,10 +25,6 @@ end
 
 desc 'Run the application'
 task :run => [:build] do
-  debug = ENV[DEBUG_ENV_KEY]
-  debug ||= '0'
-  project_path = Dir.glob('*.xcodeproj').first
-  project = Xcodeproj::Project.open(project_path)
   if debug.to_i.nonzero?
     exec "lldb #{DERIVED_DATA_PATH}/Build/Products/Debug/#{project.app_target.product_name}.app/"
   else
@@ -36,8 +35,5 @@ end
 
 desc 'Run the test/spec suite'
 task :spec do
-  workspace = RSwift::WorkspaceProvider.workspace
-  project_path = Dir.glob('*.xcodeproj').first
-  project = Xcodeproj::Project.open(project_path)
   exec "xcodebuild test -workspace #{workspace} -scheme #{project.app_scheme_name} -destination 'platform=macosx' -derivedDataPath #{DERIVED_DATA_PATH} | xcpretty -tc"
 end
