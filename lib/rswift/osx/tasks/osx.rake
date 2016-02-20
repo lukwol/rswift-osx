@@ -26,9 +26,9 @@ end
 desc 'Run the application'
 task :run => [:build] do
   if debug.to_i.nonzero?
-    exec "lldb #{DERIVED_DATA_PATH}/Build/Products/Debug/#{project.app_target.product_name}.app/"
+    exec "lldb #{DERIVED_DATA_PATH}/Build/Products/#{project.debug_build_configuration.name}/#{project.app_target.product_name}.app/"
   else
-    system "open #{DERIVED_DATA_PATH}/Build/Products/Debug/#{project.app_target.product_name}.app/"
+    system "open #{DERIVED_DATA_PATH}/Build/Products/#{project.debug_build_configuration.name}/#{project.app_target.product_name}.app/"
     exec "tail -f /private/var/log/system.log"
   end
 end
