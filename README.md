@@ -1,6 +1,7 @@
 # RSwift::OSX
 
 RSwift::OSX lets you execute rake commands specific to OSX project.
+
 RSwift::OSX uses rswift and rswift-shared gems.
 
 ## Installation
