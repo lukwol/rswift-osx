@@ -1,8 +1,7 @@
 # RSwift::OSX
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/rswift/osx`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+RSwift::OSX lets you execute rake commands specific to OSX project.
+RSwift::OSX uses rswift and rswift-shared gems.
 
 ## Installation
 
@@ -22,17 +21,51 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Add this line to `Rakefile` in project directory
+
+```ruby
+require 'rswift/osx'
+```
+
+By default rswift will find project settings on it's own.
+Group names and configurations have default initial values.
+If you use custom configuration create `.rswift.yml` to specify different project settings.
+
+```yml
+app_scheme_name: MyApp
+product_name: MyApp
+app_group: MyApp                                    #Default: app
+spec_group: MyAppSpec                               #Default: spec
+debug_build_configuration: Debug                    #Default: Debug
+release_build_configuration: Release                #Default: Release
+debug_product_bundle_identifier: co.rswift.myapp
+release_product_bundle_identifier: co.rswift.myapp
+```
+
+To display all tasks simply run `rake -T`
+
+### Available tasks
+
+```
+rake build              # Build workspace
+rake clean              # Clean build objects
+rake pod:clean          # Clean cocoapods
+rake run                # Run the application
+rake spec               # Run the test/spec suite
+rake update:references  # Update file references
+```
+
+Default task is `rake run`
+
+Additionaly task `rake run` can be executed with flag `debug=1`, which enables LLDB.
 
 ## Development
-
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
 
 To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/rswift-osx.
+Bug reports and pull requests are welcome on GitHub at https://github.com/lukwol/rswift-osx.
 
 
 ## License
